@@ -540,8 +540,10 @@ function getMaxItems(arr, n) {
  *    findCommonElements(['a', 'b', 'c'], ['b', 'c', 'd']) => [ 'b', 'c' ]
  *    findCommonElements([1, 2, 3], ['a', 'b', 'c']) => []
  */
-function findCommonElements(/* arr1, arr2 */) {
-  throw new Error('Not implemented');
+function findCommonElements(arr1, arr2) {
+  return arr1
+    .map((elem) => (arr2.includes(elem) === true ? elem : ''))
+    .filter((elem) => elem !== '');
 }
 
 /**
@@ -555,8 +557,23 @@ function findCommonElements(/* arr1, arr2 */) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  // eslint-disable-next-line no-unused-vars
+  let counter = 1;
+
+  const newArr = nums.reduce((acc, elem, index, arr) => {
+    if (arr[index + 1] > arr[index]) {
+      counter += 1;
+    } else if (arr[index + 1] < arr[index]) {
+      acc.push(counter);
+      counter = 1;
+    } else if (elem === arr[arr.length - 1]) {
+      acc.push(counter);
+    }
+    return acc;
+  }, []);
+  // console.log(newArr);
+  return Math.max(...newArr);
 }
 
 /**
@@ -573,8 +590,14 @@ function findLongestIncreasingSubsequence(/* nums */) {
  *  propagateItemsByPositionIndex([ 'a', 'b', 'c', null ]) => [ 'a', 'b', 'b', 'c', 'c', 'c',  null, null, null, null ]
  *  propagateItemsByPositionIndex([ 1,2,3,4,5 ]) => [ 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  return arr.reduce(
+    (acc, elem, index) => [
+      ...acc,
+      ...Array.from({ length: index + 1 }).fill(elem),
+    ],
+    []
+  );
 }
 
 /**
@@ -590,8 +613,20 @@ function propagateItemsByPositionIndex(/* arr */) {
  *    shiftArray(['a', 'b', 'c', 'd'], -1) => ['b', 'c', 'd', 'a']
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
-function shiftArray(/* arr, n */) {
-  throw new Error('Not implemented');
+function shiftArray(arr, n) {
+  const shiftArr = n > 0 ? arr.slice(-n) : arr.splice(0, -n);
+  const workArr =
+    n > 0 ? arr.splice(0, arr.length - n) : arr.slice(0, arr.length);
+
+  const res = [];
+
+  if (n > 0) {
+    res.push(shiftArr, workArr);
+  } else {
+    res.push(workArr, shiftArr);
+  }
+
+  return res.flat(1);
 }
 
 /**
@@ -643,27 +678,30 @@ function sortDigitNamesByNumericOrder(arr) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+// eslint-disable-next-line consistent-return
+function swapHeadAndTail(arr) {
+  const arrLength = arr.length;
+  if (arrLength === 1) {
+    return arr;
+  }
 
-  // const arrLength = arr.length;
-  // if (arrLength === 1) {
-  //   return arr;
-  // } else if (arrLength % 2 === 0) {
-  //   const half = arr.length / 2;
-  //   const head = arr.slice(0, half);
-  //   const tail = arr.slice(half, arrLength);
-  //   tail.push(...head);
-  //   return tail;
-  // } else {
-  //   const half = Math.floor(arr.length / 2);
-  //   const head = arr.slice(0, half);
-  //   const tail = arr.slice(half + 1, arrLength);
-  //   const middle = arr.slice(half, half + 1);
-  //   tail.push(...middle);
-  //   tail.push(...head);
-  //   return tail;
-  // }
+  if (arrLength % 2 === 0) {
+    const half = arr.length / 2;
+    const head = arr.slice(0, half);
+    const tail = arr.slice(half, arrLength);
+    tail.push(...head);
+    return tail;
+  }
+
+  if (arrLength % 2 !== 0) {
+    const half = Math.floor(arr.length / 2);
+    const head = arr.slice(0, half);
+    const tail = arr.slice(half + 1, arrLength);
+    const middle = arr.slice(half, half + 1);
+    tail.push(...middle);
+    tail.push(...head);
+    return tail;
+  }
 }
 
 module.exports = {
