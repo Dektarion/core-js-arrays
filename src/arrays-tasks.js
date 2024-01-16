@@ -558,7 +558,6 @@ function findCommonElements(arr1, arr2) {
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
 function findLongestIncreasingSubsequence(nums) {
-  // eslint-disable-next-line no-unused-vars
   let counter = 1;
 
   const newArr = nums.reduce((acc, elem, index, arr) => {
@@ -572,7 +571,7 @@ function findLongestIncreasingSubsequence(nums) {
     }
     return acc;
   }, []);
-  // console.log(newArr);
+
   return Math.max(...newArr);
 }
 
@@ -678,30 +677,19 @@ function sortDigitNamesByNumericOrder(arr) {
  *   swapHeadAndTail([]) => []
  *
  */
-// eslint-disable-next-line consistent-return
+
 function swapHeadAndTail(arr) {
-  const arrLength = arr.length;
-  if (arrLength === 1) {
-    return arr;
+  if (arr.length % 2 === 1) {
+    return [
+      ...arr.slice(Math.round(arr.length / 2)),
+      arr[Math.floor(arr.length / 2)],
+      ...arr.slice(0, Math.floor(arr.length / 2)),
+    ];
   }
-
-  if (arrLength % 2 === 0) {
-    const half = arr.length / 2;
-    const head = arr.slice(0, half);
-    const tail = arr.slice(half, arrLength);
-    tail.push(...head);
-    return tail;
-  }
-
-  if (arrLength % 2 !== 0) {
-    const half = Math.floor(arr.length / 2);
-    const head = arr.slice(0, half);
-    const tail = arr.slice(half + 1, arrLength);
-    const middle = arr.slice(half, half + 1);
-    tail.push(...middle);
-    tail.push(...head);
-    return tail;
-  }
+  return [
+    ...arr.slice(Math.round(arr.length / 2)),
+    ...arr.slice(0, Math.floor(arr.length / 2)),
+  ];
 }
 
 module.exports = {
